@@ -1,0 +1,18 @@
+{
+  "game_folder": "../Pokemon Copper",
+  "launch": "Game.exe",
+  "pack_size_mb": 32,
+  "exclude": [
+    "Game.rxproj",
+    "scripts_combine.rb",
+    "scripts_extract.rb",
+    "Data/Scripts/*",
+    "*.URL",
+    "Town Map Generator.html",
+    "Launcher.exe",
+    "launcher.ini",
+    "launcher_data/*",
+    "*.launcher-new",
+    "*Thumbs.db"
+  ]
+}

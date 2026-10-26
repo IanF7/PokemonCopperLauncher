@@ -1,0 +1,283 @@
+# Version 1.9.2
+## Balancing
+- Adjusted the trainer AI to switch Pokémon less frequently during battle.
+## Other
+- Added a unique battle theme for Team Eclipse Admins.
+## Bug Fixes
+- Fixed Crystal only being able to be rematched once.
+- Fixed gym trainers in the Tarsun City Gym not having dialogue after being defeated.
+- Fixed being able to obtain infinite Rock Smash TMs from the NPC on Route 3.
+- Fixed the Wooper given by the NPC in Penetun City being the incorrect level.
+- Fixed the additional effects of the following moves never activating: Seismic Beam, Crystalline Cannon, Raging Blast, Telekinetic Slam, Spooky Serenade, Static Surprise, and Thorn Trap.
+- Fixed TM 126 being incorrectly labeled as TM 120.
+- Fixed Captain Worldwide not giving the player Floettite.
+- Fixed Zeraora appearing in both the Savannah and Field Zones of the Azori Terrarium.
+- Fixed a bug where owning the regular forms of the legendary birds prevented players from catching their Galarian forms, and vice versa.
+- Fixed various name tag errors throughout the game.
+- Fixed a large number of typos throughout the game. And I mean a lot.
+
+# Version 1.9.1
+## Balancing
+- Changed Volstrika's second ability from Electric Surge to Motor Drive.
+- Changed Azorian Blissey's Hidden Ability from Merciless to Curious Medicine.
+## Bug Fixes
+- Fixed the Ghost move tutor crashing the game.
+- Fixed some rematch teams having Pokémon with moves they shouldn't be able to learn or moves that didn't work well with their held items.
+- Removed Recycle, Taunt, and Stealth Rock from the Move Tutor list since they were already available as TMs.
+- Fixed changing a Pokémon's Nature with a Mint not displaying the correct Nature in the Pokémon's summary screen.
+## Other
+- Readjusted audio balancing for a few of the new Pokémon cries.
+
+# Version 1.9
+## New
+- Added cries for all the new Pokémon.
+- All attacks introduced in the game now have their own animations.
+- Updated the following Pokémon's abilities to match what they have in Pokémon Champions: Mega Absol Z, Mega Garchomp Z, Mega Lucario Z, Mega Golisopod, and Mega Baxcalibur.
+- Combined the move deleter and move relearner in Pokémon Centers into a single NPC, and added a new NPC that can export your team to Pokémon Showdown format.
+## Balancing
+- Pixie Punch now never misses.
+- Reduced Dark Wave PP from 15 to 10.
+- Reduced Spectral Strike's power from 90 to 80.
+- Reduced Pressure Wave's power from 80 to 75.
+- Reduced Crystalline Cannon's accuracy from 100 to 90.
+- Increased Heist's power from 40 to 55.
+- Reduced Seismic Beam's power to 75, but gave it a 20% chance to lower the target's Special Defense by 1 stage.
+- Added the following moves as TMs: Power Surge, Raging Blast, Pressure Wave, Spectral Strike, Haunt, Seismic Beam, Frostbite, Telekinetic Slam, Crystalline Cannon, and Metal Pulse.
+- Added the following moves as move tutor moves: Dark Wave, Blitz, Thunder Slash, Fae Strike, Pixie Punch, Scorching Blade, Vengeance, and Mineral Burst.
+- Added the new moves to the learnsets of all Pokémon, both old and new, where they fit.
+## Other
+- Reduced how often weather occurs on most maps.
+## Bug Fixes
+- Fixed Ewan not having teams if the player skips gym battles after fighting Ewan.
+- Fixed a trainer appearing twice on Route 13.
+- Fixed weather not instantly disappearing from the screen when indoors.
+- Fixed the Sleeping Bag causing time to progress even if the player backed out of the Sleeping Bag menu.
+- Fixed a random spot on the Town Map displaying Route 7 where it shouldn't.
+- Fixed route music missing from Route 18.
+- Fixed the Forgotten Temple name being visible on the map before reaching it.
+- Fixed a sign in Penetun Gym displaying that Barboach can be caught instead of Tympole.
+- Fixed interaction with Tia and Charles in Resec Town having repeated dialogue.
+- Fixed the wrong dialogue box showing when interacting with Tia and Charles in Resec Town.
+- Fixed Crystal repeating dialogue before her gym battle.
+- Fixed Brawnsoon fainting if it had low HP when switching from Flood Form to Drought Form.
+- Fixed the abilities Storm Surge and State Shift being able to be repressed or copied by other Pokémon.
+- Qinlong, Yinlong, and Jinlong now have the correct abilities and hidden abilities.
+- Fixed Haunt and Psy Barrage not displaying a message when the target became trapped.
+- Fixed Gren-egg damaging allies and opposing Pokémon instead of only damaging all opposing Pokémon.
+- Fixed Guiding Flame not damaging the target.
+
+# Version 1.8.5
+## Other
+- Updated the list of items available from the Pickup ability to the following:
+  - Common: Potion (1-10), Poké Ball (1-20), Super Potion (1-30), Great Ball (1-40), Repel (1-50), Tiny Mushroom (1-60), Full Heal (1-70), Hyper Potion (1-80), Ultra Ball (1-90), Revive (11-100), Rare Candy (21-100), Sun Stone (31-100), Moon Stone (41-100), Stardust (51-100), Full Restore (61-100), Max Revive (71-100), PP Up (81-100), Max Elixir (91-100)
+  - Uncommon: Hyper Potion (1-10), Nugget (1-20), King's Rock (11-30), Full Restore (21-40), Ether (31-50), Metal Coat (41-60), Linking Cord (51-70), Elixir (61-80), Exp. Candy L (71-90), Leftovers (81-100), Exp. Candy XL (91-100)
+- Adjusted the chances of weather occurring in a few areas.
+## Bug Fixes
+- Fixed being able to surf on cliff tiles at the edge of the water in Hilo Mountain.
+- Fixed Dragonair and Chansey not being able to evolve into their regional forms.
+
+# Version 1.8.4
+## New
+- Added a dynamic weather system.
+## Balancing
+- Reworked the Lucky Horn item. Instead of increasing critical hit chance by 50% in exchange for 1/6 HP every turn, it now increases the chance of additional effects from moves occurring by 10%. This applies after abilities like Serene Grace.
+## Other
+- Added a plane sprite outside the Rusanu City Gym. It’s a surprise tool that will help us later.
+## Bug Fixes
+- The player can now leave the Horizon Cup Stadium if they enter it again during the postgame.
+- Fixed a trainer on Route 24 having an overleveled Litleo/Pyroar.
+- Fixed Pikachu, Cubone, and Exeggcute only evolving into their Alolan forms.
+- Fixed Aegislash de-Mega Evolving when switched out and not being able to Mega Evolve while in Blade Form.
+- Fixed the map transition between Lake Triton and Route 13 not lining up correctly.
+
+# Version 1.8.3
+## Other
+- Added a move relearner in the Horizon Cup Prep Room.
+- When using the PC, the screen will now turn on.
+## Bug Fixes
+- Thorn Trap is no longer treated as a priority move.
+- Fixed the player getting stuck in the Horizon Stadium Prep Room if they entered it after completing the Horizon Cup.
+- Fixed the map connection between Kuiper Town and Route 17 being shifted up a tile.
+- Fixed Ewan despawning in the middle of the conversation in Penetun City if the player entered from Route 13.
+
+# Version 1.8.2
+## New
+- Added a plugin that allows for sorting and searching items in the Bag.
+## Other
+- Updated movesets for the following Pokémon: Wrini (Shadow Sneak is now an Egg Move), Charcupine (Rapid Spin is now an Egg Move), Parkel (Nuzzle is now an Egg Move), Apozip (Boomburst is now an Egg Move), Stegodite (Zap Cannon is now an Egg Move), Spritanium and Titanimaam (Sacred Sword is now a level-up move), Oracub (Recover is now an Egg Move), and Azorian Bouffalant (Final Gambit is now a level-up move).
+## Bug Fixes
+- Fixed Puradox not having an Egg Group.
+- Fixed Volten being the only Route 1 encounter.
+- Fixed a game crash when throwing a Poké Ball after doing a soft reset with F12.
+- Fixed battles in Horizon Stadium still being accessible after completing them.
+
+# Version 1.8.1
+## Bug Fixes
+- Fixed bug preventing game startup.
+
+# Version 1.8
+## New
+- Added a plugin to allow players to view IVs and EVs in the Pokémon summary menu.
+## Balancing
+- Added a plugin to make the trainer AI less dumb.
+- Wild Pokémon that can evolve now have a 50% chance of evolving once when the player has 4 or more gym badges, and a 50% chance of evolving twice when the player has 7 or more gym badges.
+- Decreased the number of trainers on the following routes: Route 3 (-1), Route 9 (-2), Nuves Forest (-1), Route 11 (-3), Route 13 (-2), Route 14 (-2), Hilo Mountain (-1), Route 5 (-2), Callisto Cave (-3), Route 15 (-1), Route 20 (-1), Route 19 (-1), Route 16 (-1), Route 17 (-1), Route 22 (-1), and Statera Canyon (-3).
+- Added more healing items along the routes.
+## Other
+- Added the abilities for the following Legends ZA Mega Evolutions: Staraptor, Scolipede, Scrafty, Eelektross, Pyroar, Malamar, Barbaracle, Dragalge, and Falinks.
+## Bug Fixes
+- Fixed Poison, Psychic, and Rock move tutors crashing the game when trying to interact with them.
+- Fixed typos in new movesets that could cause crashes.
+- Removed the old cave exit still being in Spiral Cave.
+- Removed a debug trainer used for testing in Terah Town.
+
+# Version 1.7
+## New
+- Added Mega Evolutions from Legends ZA. Any without abilities given in Pokémon Champions will have the abilities they had before Mega Evolving.
+- Added a journal feature that tracks current objectives and tells the player where to go.
+- Added AZ's Floette to the Azori Terrarium Ruin Zone legendary encounter pool.
+- Mega Stones for Legends ZA Mega Evolutions can be obtained from either the researcher in Professor Verde's lab if the Pokémon is available in the Azori Pokédex, or from Captain Worldwide if the Pokémon is only in the National Pokédex.
+## Bug Fixes
+- Hopefully fixed move animation errors by updating the move animation package.
+- Fixed being able to re-battle Dante in the Horizon Cup Stadium after beating him.
+- Fixed the elevator in the Jepitur Office Building sending the player to the first floor if they walk into and then out of the elevator without selecting a floor.
+- Fixed black tiles in the top left of Kuiper Town.
+- Fixed the Poké Mart in Resec Town crashing when trying to access the mart with 7 gym badges.
+- Fixed being able to grab certain items on ledges despite not being on the same level as the item.
+- Fixed Poochyena not spawning on routes it was supposed to.
+- Fixed a bug where looking at Pidgey's location in the Pokédex would crash the game.
+- Fixed missing shiny icon sprites for Alacruico, Brawnsoon (Drought), Brawnsoon (Flood), Capacitaur, Chupacarno, Embush, Horeburn, Magnetaur, Mega Magnetaur, Outlage, Parkel, Parktic, Stalcria, and Stegodite.
+## Balancing
+- Adjusted level-up and tutor movesets for all new Pokémon.
+- Added the following moves to the move tutors: Fury Cutter, Megahorn, Pollen Puff, Pounce, Darkest Lariat, Dragon Cheer, Dual Chop, Charge, Supercell Slam, Coaching, Upper Hand, Vacuum Wave, Mystical Fire, Temper Flare, Sky Drop, Confuse Ray, Leaf Blade, Leaf Storm, Petal Blizzard, Frost Breath, Ice Spinner, After You, Pain Split, Pay Day, Self-Destruct, Coil, Gastro Acid, Poison Tail, Venom Drench, Cosmic Power, Magic Coat, Role Play, Speed Swap, Rock Blast, Chilling Water, and Razor Shell.
+## Other
+- Reworked Pokédex wild location data so evolved forms of wild Pokémon now display their locations if they can be encountered through wild encounter level scaling.
+- Made it so the citizens of Jepitur City vanish during the attack on the Horizon Cup Stadium.
+- Added an option to challenge Dante without Coradios.
+
+# Version 1.6
+## Bug Fixes
+- Fixed being able to get infinite Cut TMs.
+- Fixed Kamakid and Kamasei shinies not displaying correctly.
+- Fixed the Poison master move tutor charging incorrect prices for his moves.
+- Fixed incorrect encounter rates on Route 8.
+- Fixed the Sleeping Bag not progressing the time of day.
+- Fixed talking to the Elite Four guard from the left side freezing the game.
+- Fixed Aurora and Tia using the wrong sprites when Dante attacks the Horizon Cup.
+- Fixed black tiles in the bottom right of Kuiper Town.
+- Fixed Escape Rope not working in the cave portion of Statera Canyon.
+- Fixed the option to use Dig outside of battle being accessible in some spots.
+- Fixed being able to see the player's reflection on the bottom of the top floor in Tarsun Museum.
+- Fixed black tiles on the right edge of the Route 13 map.
+- Fixed invisible tiles when surfing from Lake Triton to Route 13.
+- Fixed some trainers having Ursaluna and Kleavor despite them not being in the Azori Pokédex.
+- Fixed Dvarmith gaining HP on Mega Evolution.
+- Fixed Escape Rope taking the player to water when used in Victory Road after entering from the Pokémon League.
+## Balancing
+- Updated movesets for the starter Pokémon.
+## Other
+- Added a way to catch regular Blissey in the Savanna Zone.
+- Made it so Sliggoo now evolves by leveling up when it knows Rain Dance.
+- You can now purchase a Bloodmoon Ursaluna from one of the vendors outside Azori Terrarium in the postgame.
+- Fixed various typos.
+
+# Version 1.5
+## Bug Fixes
+- Fixed losing to Ewan, Hayden, any of the Team Eclipse Admins, or the grunts on Route 3 potentially softlocking the game.
+- Fixed player getting softlocked if choosing a starter from the left edge of the table.
+- Fixed Sand Bullet's typing.
+- Fixed Dragonair and Chansey not evolving into Azorian Dragonite and Azorian Blissey respectively in certain areas.
+- Fixed player being able to re-challenge Stella repeatedly after beating her before the Horizon Cup.
+- Fixed Meowth moving strangely in Rasm City House.
+- Fixed Upper Hand causing a crash when used.
+- Fixed Carl turning into a different person after interacting with him in Jepitur City.
+- Fixed wrong event playing when entering Rusanu City for the first time from Tethys Desert.
+- Fixed Hayden not using his first team if he is battled before the player gets their 2nd gym badge.
+- Fixed Verde being in the wrong spot in his house if the game was restarted.
+- Fixed Elite Four not resetting on a loss.
+- Fixed the bottom-left house in Rasm City having the wrong warp.
+- Fixed a few tiles in Lake Triton having encounters despite not having grass.
+- Fixed Eclipse Grunt name showing instead of Dante in the Tarsun raid.
+- Fixed spelling of Exeggutor in Omno Town.
+- Fixed typo in Rasm Gym where Ewan says he wants to punch himself.
+- Fixed item vendor in Azori Terrarium crashing the game.
+- Fixed Crystal turning into Poe for her rematch battle.
+- Fixed softlock if Gale was spoken to instead of Alphonse to start the conversation with the Team Eclipse Admins in Tarsun City.
+- Fixed Picnicker on Route 15 crashing the game by removing her from the game.
+- Fixed traders breaking because their names spilled over to the next line of code.
+- Fixed the trade for Shellos in Seri Town so it now gives a Shellos equal in level to the Pokémon that was traded.
+- Fixed moves like Dazzling Gleam, Muddy Water, and Transform having a nil integer issue.
+- Fixed gym leaders still being in their gyms during the Tarsun Meeting.
+- Potentially fixed Crimson Temple bug.
+- Potentially fixed Stalpaca sprite icon not appearing.
+## Balancing
+- Adjusted movesets for Azorian form Pokémon.
+- Rebalanced encounter rates. Land encounters were lowered from 21% to 16%, and cave and water encounters were lowered from 5% to 3%.
+- Lowered Larvesta's, Zweilous', and Drakloak's evolution levels to 55 since they evolved too late to be used.
+- Replaced Hayden's Gardevoir in his Pokémon League and rematch teams with Volcarona.
+## Other
+- Added a small chance to encounter Rockruff with Own Tempo.
+- Added more times of day to skip to using the sleeping bag.
+
+# Version 1.4
+## Bug Fixes
+- Fixed gym leaders making the player select one less pokemon than they should.
+- Fixed puzzle in the Crimson Temple.
+- Fixed Rock Climb not working in caves again because it didn't save last time despite me checking it repeatedly.
+- Fixed the Thunderwave TM being in both Route 20 and Hilo Mountain (the Avalanche TM is what should have been in Hilo Mountain).
+- Fixed double battle against Team Eclipse grunts in Nuves Forest not scaling.
+- Made it so Forgotten Temple won't appear on the map until the player has been there.
+- Fixed trainer errors on Route 14.
+
+# Version 1.3
+## Bug Fixes
+- Fixed TM 83 and TM 135 both being Poison Jab. TM 135 is now Body Slam.
+- Fixed trash can in Jepitur City giving infinite Ability Capsules.
+- Fixed NPC giving out infinite Good Rods.
+- Fixed being able to walk through some of the slot machines in the Rasm Game Corner.
+- Fixed being able to walk onto walls by walking on the railings of stairs.
+- Fixed being able to walk onto walls from gym leader platforms.
+- Fixed being able to walk on water in Nuves Forest.
+- Fixed picking up the Mega Stone on Route 21 causing a game crash.
+- Fixed Embush and Stalcria being unable to evolve.
+- Fixed trainer in Lake Triton having the wrong team.
+- Fixed in-game trades not working.
+- Fixed potentially getting softlocked in Forgotten Temple if the player runs out of Poké Balls.
+- Fixed a few trainers on Route 14 treating the player like they had already fought them.
+- Fixed Pokémon won from the Rasm City Game Corner not appearing in the Pokédex.
+- Fixed Repels Bot being in the Poké Mart in Omno Town.
+- Fixed bug where selecting the male trainer, entering a name, backing out, then entering the name again would display the wrong sprite.
+- Removed Iron Shell from Jepitur Department Store since it was a scrapped evolution item.
+## Balancing
+- Reworked the gym system so the 2nd and 3rd gym leaders now have 3 Pokémon, the 4th and 5th have 4, the 6th and 7th have 5, and Stella has a full team of 6.
+- Both of Stella's teams now use Bronzong instead of Lucario.
+- Changed Mega Aurocyx's ability from Quick Feet to Flame Body.
+- Changed Mega Latremor's ability from Leaf Guard to Battle Armor.
+- NPC in Jepitur City that sells Nature Mints will now appear after the player has 6 badges instead of 8.
+- Increased prices of Exp. Candies.
+## Other
+- Added alternate routes to Spiral Cave.
+- Added option to do a x5 pull in the Rasm City Game Corner at a slightly discounted price.
+- Adjusted audio balancing for most locations.
+- Removed scrapped Mega Evolutions from the list of new Mega Evolutions in the Jepitur Office Building.
+- Fixed various typos.
+
+# Version 1.2
+## Bug Fixes
+- Fixed entrance to Majestic Chamber sending the player to the Legendary Chamber in the Elite 4.
+- Fixed crash when getting a Bikkunise from the Rasm Game Corner.
+- Fixed game crashing when interacting with specific trainers of the Picnicker trainer class.
+## Balancing
+- Made a few more trainers in Spiral Cave optional.
+## Other
+- Fixed a few typos.
+- Adjusted Pokedex rewards so now Professor Verde won't give players rewards for catching 150 Pokemon or more until after they have acquired 6 or more badges.
+
+# Version 1.1
+## Bug Fixes
+- Fixed not being able to change button layout on controller by adding a new plugin.
+- Fixed Cut, Surf, Strength, Waterfall, and Dive not being able to be deleted.
+- Fixed Oswald fight triggering more than once and causing a softlock.
+- Fixed bug where meeting Alphonse in Jepitur City would trigger multiple times.
+## Balancing
+- Raised level fossils are revived at from 1 to 20.
