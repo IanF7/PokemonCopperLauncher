@@ -14,53 +14,55 @@ The launcher keeps your game up to date automatically. Open it instead of `Game.
 
 These links always give you the newest version.
 
-## New players
+## New Players (Windows, Mac, Linux, and Steam Deck)
 
 1. Download the full game and unzip it.
 2. Open `Launcher.exe` in the `Pokemon Copper` folder.
+3. For Mac, Linux, and Steam Deck users, please view the additional setup instructions below.
 3. Click **PLAY**.
 
-From now on, always open the game with `Launcher.exe` and you'll get every update automatically.
+## Mac
+1. Download Porting Kit from [the Porting Kit download page](https://www.portingkit.com/).
+2. Download the latest version of Pokémon Copper.
+3. Extract the Pokémon Copper files.
+4. Open Porting Kit and choose "Install".
+5. When asked for the Windows program, go to the folder where you extracted the Pokémon Copper files and select `Launcher.exe`
+6. Finish the setup and launch the launcher from Porting Kit.
 
-## Already have the game?
+## Linux
+1. Download and install the latest version of Wine for your Linux build from [the Wine download page](https://gitlab.winehq.org/wine/wine/-/wikis/Download).
+2. Download the latest version of Pokémon Copper.
+3. Extract the Pokémon Copper files.
+4. Open the terminal in the file path that the Pokémon Copper `Launcher.exe` file is located.
+5. In the terminal, run: wine Launcher.exe
 
-1. Download `Launcher.exe`.
-2. Put it in your Pokémon Copper folder, next to `Game.exe`.
-3. Open it. The first time, it checks all your game files, which takes a minute or two. Then it downloads only what's new.
+## Steam Deck
+1. Switch Steam Deck to desktop mode.
+2. Download the latest version of Pokémon Copper.
+4. Extract the Pokémon Copper file.
+5. Right click `Launcher.exe` and select "Add to Steam".
+6. Still in desktop mode, open Steam and find `Launcher.exe` in your library.
+7. Right click on `Launcher.exe`, select "Properties", and rename to Pokémon Copper.
+7. Switch back to game mode and run.
 
-Your saves stay where they are.
+## New Players (Android)
+1. On your Android device go to (the JoiPlay Patreon page)[https://www.patreon.com/joiplay/posts/joiplay-1-21-000-150752797] and download JoiPlay 1.21.000 and RPG Maker Plugin 1.22.00.
+2. Download the latest version of Pokémon Copper.
+3. Go to your Downloads folder and run the JoiPlay download and then the RPG Maker Plugin. Make sure to allow all permissions.
+4. Extract the Pokémon Copper file.
+5. Open JoiPlay and click the + button and then Add Game. Navigate to the path of Pokémon Copper and add it.
+6. Run the game from JoiPlay.
 
-## Mac, Linux and Steam Deck
+## Returning Players (Windows, Mac, Linux, and Steam Deck)
+1. Download `Launcher.exe`
+2. Locate your Pokemon Copper folder and drag `Launcher.exe` into it. It should be in the same folder as `Game.exe`
+3. If you are on Max, Linux, or Steam Deck, follow the steps above for new users to re-direct everything to `Launcher.exe` instead of `Game.exe` if you haven't done so already
+4. Open `Launcher.exe`. The first time it opens it will check your game files to make sure you are up-to-date. This may take a few minutes. It will then download any new files it needs to.
+5. Click **PLAY**.
 
-Use `Launcher.exe` wherever you used to use `Game.exe`:
-
-- **Mac (Porting Kit):** point Porting Kit at `Launcher.exe` instead of `Game.exe`.
-- **Linux:** run `wine Launcher.exe` instead of `wine Game.exe`.
-- **Steam Deck:** add `Launcher.exe` to Steam instead of `Game.exe`.
-
-## Android (JoiPlay)
-
-The launcher doesn't run on Android, so updating is still done by hand:
-
-1. Download the Android version from the link above and unzip it.
-2. Copy your save into the new version's folder, the same way as before.
-3. Add the new folder to JoiPlay.
-
-## "Windows protected your PC" and other warnings
-
-The launcher is new and comes from a small developer, so you may see warnings the first time:
-
-- **Your browser says the file isn't commonly downloaded:** choose **Keep**.
-- **Windows says "Windows protected your PC":** click **More info**, then **Run anyway**.
-
-## Having problems?
-
-- **"Couldn't check for updates":** check your internet connection. You can still click **PLAY** to play the version you have.
-- **Something seems broken:** click **Repair game files** in the launcher. It re-checks every file and re-downloads any that are missing or damaged.
-- **Still stuck?** Ask in the [Discord](https://discord.gg/pavpnHGPYh) and include the file `launcher_data\launcher.log` from your game folder.
-
-[Pokémon Copper website](https://ianf7.github.io/PokemonCopper/)
-
----
-
-*Pokémon Copper is a fan-made project and is not affiliated with, endorsed, sponsored, or specifically approved by Nintendo, Game Freak, or The Pokémon Company. Pokémon and all related trademarks, names and characters are owned by Nintendo, Game Freak, The Pokémon Company and Creatures Inc.*
+## Returning Players (Android)
+The launcher doesn't run on Android, so updating will still have to be done manually:
+1. Download `Pokemon-Copper-Android.zip`
+2. Open the file for the OLD version and find a file called something like "File A.rxdata" (the letter may vary depending on which save slot you saved your data in). This will be in the same filepath as Game.exe.
+3. Hold down on the "File A.rxdata" folder and select Copy. When it asks where you want to copy it to, navigate to the NEW version, and once you are in the same file directory as the NEW verison's Game.exe file, select Copy Here.
+4. Delete the OLD version of the game and add the NEW version to JoiPlay.
