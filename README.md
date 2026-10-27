@@ -1,72 +1,68 @@
 # Pokémon Copper Launcher
 
-A small `Launcher.exe` that sits next to `Game.exe`. When a player opens it, it:
+`Launcher.exe` sits next to `Game.exe`. When a player opens it, it:
 
-1. Checks GitHub for the newest version.
-2. Downloads only the files that changed, then checks every file it installs.
+1. Updates itself if there's a newer launcher.
+2. Checks GitHub for the newest game version and downloads only the files that changed, checking every file it installs.
 3. Shows the patch notes, then starts the game when the player clicks **PLAY**.
 
-Saves aren't touched. Essentials keeps them in AppData, not in the game folder.
+Saves aren't touched: Essentials keeps them in AppData, not in the game folder. Releases live on the public **IanF7/PokemonCopperLauncher** repository's Releases page. Players can't download from a private repository.
 
-## What's in this folder
+## Releasing an update
 
-| Path | What it is |
+1. Finish the update and change the version in `mkxp.json`'s `windowTitle`.
+2. Add the new version's notes to the top of `patchnotes.txt` (format below).
+3. If you changed any plugins, start the game once from RPG Maker so `PluginScripts.rxdata` is up to date.
+4. Run **`release.bat`** and type the version, for example `2.0.0`. It takes about 4 minutes and doesn't change your game folder. It:
+   - copies the game into `build/`, runs `scripts_combine.rb` on the copy, and removes `Data/Scripts`
+   - leaves out `scripts_combine.rb`, `scripts_extract.rb`, `Game.rxproj`, `Town Map Generator.html` and `Essentials Docs Wiki.URL`
+   - makes the Android copy with SetControls' `ENABLED = false`
+   - builds the launcher's update files and the full downloads
+   - puts everything to upload in `releases\v2.0.0\upload\`, then deletes `build/`
+5. On GitHub, go to **PokemonCopperLauncher → Releases → Draft a new release**, set the tag to `v2.0.0` (with the `v`), drag in **every file** from that `upload` folder, and click **Publish release**.
+6. Commit and push this folder. This saves `releases\history.txt` and the new manifest, which the next release is compared against.
+
+Players' launchers pick up the update the next time they open them.
+
+### What's in the upload folder
+
+| File | What it's for |
 |---|---|
-| `launcher/` | The launcher's source code. `launcher/build.bat` builds `launcher/dist/Launcher.exe`. |
-| `patchnotes.txt` | The patch notes the launcher shows. Edit this for each update (newest at the top). |
-| `release_settings.json` | Where your game folder is and which dev files to leave out of releases. |
-| `tools/make_release.py` | Builds the files to upload for a new version. |
-| `tools/serve_local.py` | A pretend GitHub server for testing on your PC. |
-| `tools/import_patchnotes.py` | Copies patch notes from the website's `downloads.html` (read-only). Already run once. |
-| `test_locally.bat` | One-step local testing (see below). |
-| `releases/` | Release history. **Keep this folder.** Each new release is compared against the last one. |
+| `Pokemon-Copper.zip` | Full download for Windows, Mac, Linux and Steam Deck (includes `Launcher.exe`) |
+| `Pokemon-Copper-Android.zip` | Full download for JoiPlay |
+| `files-v….zip`, `manifest.txt`, `patchnotes.txt` | What the launcher downloads |
+| `Launcher.exe` | The newest launcher; players' launchers update themselves from it |
 
-Nothing here needs installing. The launcher is built with the C# compiler that comes with Windows, and the tools use the Python you already have.
+The two full zips have the same name every release, so these links always point at the newest version and never need changing on the website:
 
-## Testing on your PC
+- `https://github.com/IanF7/PokemonCopperLauncher/releases/latest/download/Pokemon-Copper.zip`
+- `https://github.com/IanF7/PokemonCopperLauncher/releases/latest/download/Pokemon-Copper-Android.zip`
 
-1. Double-click or run `test_locally.bat 1.9.2`.
-   - This builds a pretend 1.9.2 release from your game folder into `test/releases/`.
-   - It opens a "test server" window. Leave it open; it pretends to be GitHub.
-   - It opens the launcher in `test/Pokemon Copper/`. Because that folder starts empty, you'll see a fresh install.
-2. Click **INSTALL**, then **PLAY**.
-3. To test an update, change something in the game (or copy the game folder and change the copy), add a `# Version 1.9.3` section to the top of `patchnotes.txt`, then run `test_locally.bat 1.9.3` (add the copy's path at the end if you used one). The launcher should offer **UPDATE** and download only what changed.
-4. To pretend to be a player who downloaded from MEGA, unzip an old release somewhere, put `Launcher.exe` and the `launcher.ini` from `test/Pokemon Copper/` into it, and run it.
+### If release.bat stops about scripts
 
-Delete the `test` folder whenever you want to start over.
+Your game folder can hold scripts in two places: combined in `Data/Scripts.rxdata`, and split into the `Data/Scripts` folder. If both exist and don't match, release.bat stops instead of guessing which one is current:
 
-## Making a real release (once you're ready to go live)
+- If your latest edits are in the `Data/Scripts` files, run it again as `release.bat 2.0.0 --use-script-files`.
+- If you made your latest edits in RPG Maker's script editor, run `scripts_extract.rb` in the game folder first, then run release.bat again.
 
-1. Finish the update in RPG Maker as usual, and update the version in `mkxp.json`'s `windowTitle`.
-   Run `scripts_combine.rb` like you do before zipping. The release tool refuses to run while the scripts are still split out into `Data/Scripts`.
-2. Add the new version's notes to the top of `patchnotes.txt`.
-3. Run `python tools/make_release.py 1.9.3`.
-   Everything to upload lands in `releases/v1.9.3/upload/`: one or more `files-….zip`, `manifest.txt` and `patchnotes.txt`.
-   Add `--full-zip` to also get a normal full-game zip (with the launcher inside) for your website.
-4. On GitHub, go to the repository → **Releases** → **Draft a new release**, set the tag to `v1.9.3`, drag in **everything** from the `upload` folder, and click **Publish release**.
+### Changing the launcher
 
-Once it's published, every launcher picks up the update the next time it opens.
+Edit the code in `launcher/src/`, then raise `Version` near the top of `launcher/src/Program.cs` (for example `1.1.0` to `1.2.0`). The next release ships the new launcher, and players' launchers replace themselves with it.
 
-### The very first release: start from the 1.9.2 zip
+## The very first release (1.9.2)
 
-To keep existing players from re-downloading the whole game, make the first GitHub release **1.9.2, built from the exact zip you put on MEGA**:
+Publish 1.9.2 first, built from the zips you put on MEGA, so current players only download what changed in 2.0.0:
 
 ```
-python tools/make_release.py 1.9.2 --game "C:\path\to\unzipped\Pokemon Copper 1.9.2\Pokemon Copper"
+python tools\release.py 1.9.2 --from-zip "..\Releases\Pokemon Copper 1.9.2.zip" --android-zip "..\Releases\Pokemon Copper 1.9.2 Android.zip"
 ```
 
-Upload that as release `v1.9.2`, then make 1.9.3 normally. A player with the MEGA copy of 1.9.2 who drops in the launcher then downloads only what changed in 1.9.3. If you skip this step, they still end up with a working game, but the download is bigger.
-
-### Where releases go
-
-`Launcher.exe` currently looks at **github.com/IanF7/PokemonCopper/releases** (your website's repository). Releases don't change the website. If you'd rather use a separate repository, change `ReleaseBase` at the top of `launcher/src/Config.cs` and run `launcher/build.bat` again.
-
-GitHub's limits are 2 GB per file, with no total limit for releases. Release zips are split into roughly 32 MB pieces, so repairing one damaged file doesn't mean re-downloading the whole game.
+Upload `releases\v1.9.2\upload\` as release `v1.9.2`, then release 2.0.0 normally.
 
 ## Patch notes format
 
 ```
-# Version 1.9.3
+# Version 2.0.0
 ## Bug Fixes
 - Fixed a thing.
   - A detail under it (indent two spaces).
@@ -74,18 +70,29 @@ GitHub's limits are 2 GB per file, with no total limit for releases. Release zip
 - Changed a thing.
 ```
 
-## For players (draft for the website later)
+## For players (wording for the website later)
 
 - **Windows:** unzip, then open `Launcher.exe` instead of `Game.exe`.
 - **Linux:** `wine Launcher.exe` instead of `wine Game.exe`.
 - **Mac (Porting Kit):** point Porting Kit at `Launcher.exe` instead of `Game.exe`.
 - **Steam Deck:** add `Launcher.exe` to Steam instead of `Game.exe`.
-- **Android (JoiPlay):** still updated by hand.
-- Already have the game? Drop `Launcher.exe` into your current game folder and open it. It checks your files and downloads only what's different.
-- Windows may show "Windows protected your PC" the first time. Click **More info → Run anyway**.
+- **Android (JoiPlay):** download `Pokemon-Copper-Android.zip` each update, as before.
+- **Already have the game?** Put `Launcher.exe` into your current game folder and open it. The first check takes a minute or two; after that it only downloads what's different.
+- Windows may say "Windows protected your PC" the first time. Click **More info → Run anyway**.
 
-## Not done yet / things to know
+## What's in this folder
 
-- **Wine, Mac and Steam Deck haven't been tested.** The launcher uses .NET, which Wine provides through "wine-mono" (Steam Deck's Proton includes it, and plain Wine usually offers to install it). Ask a Linux, Mac or Steam Deck player to try it before announcing.
-- **The launcher can't update itself yet.** If `Launcher.exe` changes, players need the new one by hand. This could be added later.
-- **Test options:** `Launcher.exe --headless` updates without a window, and `Launcher.exe --screenshot file.png` saves a picture of the window. Both write to `launcher_data/launcher.log`, which is also the first place to look when a player reports a problem.
+| Path | What it is |
+|---|---|
+| `release.bat` / `tools/release.py` | The one-step release |
+| `tools/make_release.py` | Builds the launcher's update files (used by release.py) |
+| `tools/rxscripts.rb` | Combines scripts and switches SetControls off for Android (used by release.py) |
+| `tools/serve_local.py` | A pretend GitHub server for testing on your PC |
+| `tools/import_patchnotes.py`, `tools/extract_icon.py` | One-time helpers, already run |
+| `launcher/` | The launcher's code. `launcher/build.bat` builds `launcher/dist/Launcher.exe` |
+| `releases/` | Release history. Keep it; each release is compared against the last one |
+
+## Things to know
+
+- **Not tested on Wine, Mac or Steam Deck.** Ask a player on each to try the launcher before announcing it.
+- **Test options:** `Launcher.exe --headless` updates without a window. Both that and normal runs write to `launcher_data/launcher.log`, which is the first place to look when a player reports a problem.

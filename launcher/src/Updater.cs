@@ -62,13 +62,89 @@ namespace CopperLauncher
 
         // ---------------------------------------------------------------- check
 
+        // Set when Check replaced Launcher.exe with a newer one; the caller should
+        // start the new launcher and close this one.
+        public bool LauncherReplaced;
+        public bool AllowSelfUpdate = true;
+
         public void Check(bool verifyEverything)
         {
             Report("Checking for updates...", -1);
             string text = FetchText(cfg.ManifestUrl);
             Remote = Manifest.Parse(text);
             Log.Write("Latest version on server: " + Remote.Version + " (" + Remote.Files.Count + " files, " + Remote.Packs.Count + " packs)");
+            if (AllowSelfUpdate && UpdateLauncher()) return;
             Scan(verifyEverything);
+        }
+
+        // ---------------------------------------------------------------- self-update
+
+        public static string ExePath
+        {
+            get { return System.Reflection.Assembly.GetExecutingAssembly().Location; }
+        }
+
+        // Compares "1.2.10" style versions. Returns <0, 0 or >0.
+        public static int CompareVersions(string a, string b)
+        {
+            string[] pa = a.Split('.'), pb = b.Split('.');
+            for (int i = 0; i < Math.Max(pa.Length, pb.Length); i++)
+            {
+                int x = 0, y = 0;
+                if (i < pa.Length) int.TryParse(pa[i], out x);
+                if (i < pb.Length) int.TryParse(pb[i], out y);
+                if (x != y) return x.CompareTo(y);
+            }
+            return 0;
+        }
+
+        // Downloads a newer Launcher.exe if the release has one, and swaps it in.
+        // Windows lets a running program be renamed, so the running copy becomes
+        // Launcher.exe.old (deleted next time) and the new one takes its name.
+        // Any problem just leaves the current launcher in place.
+        bool UpdateLauncher()
+        {
+            if (Remote.LauncherVersion == null || CompareVersions(Remote.LauncherVersion, Program.Version) <= 0)
+                return false;
+            string exe = ExePath;
+            string fresh = exe + ".new", old = exe + ".old";
+            Log.Write("Launcher " + Program.Version + " -> " + Remote.LauncherVersion);
+            try
+            {
+                Report("Updating the launcher...", -1);
+                Download(cfg.PackUrl(Remote.LauncherFile.Tag, Remote.LauncherFile.Name), fresh, Remote.LauncherFile,
+                         0, Remote.LauncherFile.Size, "", "Updating the launcher");
+                TryDelete(old);
+                File.Move(exe, old);
+                try { File.Move(fresh, exe); }
+                catch { File.Move(old, exe); throw; }
+                LauncherReplaced = true;
+                Log.Write("Launcher updated; restarting.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Launcher self-update failed, carrying on with this one: " + ex.Message);
+                TryDelete(fresh);
+                return false;
+            }
+        }
+
+        // Removes the previous launcher left behind by a self-update. It may still
+        // be closing, so this tries for a few seconds.
+        public static void CleanUpOldLauncher()
+        {
+            string old = ExePath + ".old";
+            if (!File.Exists(old)) return;
+            Thread t = new Thread(delegate ()
+            {
+                for (int i = 0; i < 20 && File.Exists(old); i++)
+                {
+                    try { File.Delete(old); } catch { Thread.Sleep(250); }
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
         }
 
         void Scan(bool verifyEverything)
@@ -156,7 +232,7 @@ namespace CopperLauncher
                 string zipPath = Path.Combine(dlDir, pack.Name);
                 string label = byPack.Count > 1 ? " (part " + packNum + " of " + byPack.Count + ")" : "";
 
-                Download(cfg.PackUrl(pack.Tag, pack.Name), zipPath, pack, downloadedBefore, totalDownload, label);
+                Download(cfg.PackUrl(pack.Tag, pack.Name), zipPath, pack, downloadedBefore, totalDownload, label, "Downloading update");
                 downloadedBefore += pack.Size;
 
                 Extract(zipPath, kv.Value, label);
@@ -195,7 +271,7 @@ namespace CopperLauncher
             return byPack;
         }
 
-        void Download(string url, string dest, PackInfo pack, long before, long total, string label)
+        void Download(string url, string dest, PackInfo pack, long before, long total, string label, string verb)
         {
             string part = dest + ".part";
 
@@ -213,7 +289,7 @@ namespace CopperLauncher
                 attempt++;
                 try
                 {
-                    DownloadOnce(url, part, pack.Size, before, total, label);
+                    DownloadOnce(url, part, pack.Size, before, total, label, verb);
                     break;
                 }
                 catch (WebException ex)
@@ -245,7 +321,7 @@ namespace CopperLauncher
             File.Move(part, dest);
         }
 
-        void DownloadOnce(string url, string part, long expected, long before, long total, string label)
+        void DownloadOnce(string url, string part, long expected, long before, long total, string label, string verb)
         {
             long have = File.Exists(part) ? new FileInfo(part).Length : 0;
             if (have >= expected) { TryDelete(part); have = 0; }
@@ -274,7 +350,7 @@ namespace CopperLauncher
                         {
                             lastTick = Environment.TickCount;
                             long done = before + have;
-                            Report("Downloading update" + label + "...   " + Mb(done) + " / " + Mb(total),
+                            Report(verb + label + "...   " + Mb(done) + " / " + Mb(total),
                                    total > 0 ? (double)done / total : -1);
                         }
                     }

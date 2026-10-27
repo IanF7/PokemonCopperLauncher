@@ -33,11 +33,14 @@ namespace CopperLauncher
     //   file     <pack index> <size> <sha1> <path>
     //   dir      <path>     (an empty folder the game expects)
     //   delete   <path>
+    //   launcher <version> <tag> <file name> <size> <sha1>   (newest Launcher.exe)
     class Manifest
     {
         public string Version = "";
         public string Tag = "";
         public string Launch = "Game.exe";
+        public string LauncherVersion;    // null if the release doesn't include a launcher
+        public PackInfo LauncherFile;
         public List<PackInfo> Packs = new List<PackInfo>();
         public List<FileEntry> Files = new List<FileEntry>();
         public List<string> Deletes = new List<string>();
@@ -79,6 +82,13 @@ namespace CopperLauncher
                         break;
                     case "delete": m.Deletes.Add(p[1]); break;
                     case "dir": m.Dirs.Add(p[1]); break;
+                    case "launcher":
+                        m.LauncherVersion = p[1];
+                        m.LauncherFile = new PackInfo();
+                        m.LauncherFile.Tag = p[2]; m.LauncherFile.Name = p[3];
+                        m.LauncherFile.Size = long.Parse(p[4], CultureInfo.InvariantCulture);
+                        m.LauncherFile.Sha1 = p[5];
+                        break;
                     // Unknown lines are ignored so newer manifests still work with older launchers.
                 }
             }

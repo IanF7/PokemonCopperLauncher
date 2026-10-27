@@ -238,6 +238,7 @@ namespace CopperLauncher
             SetMode(Mode.Busy);
             Exception error = null;
             string notes = null;
+            updater.AllowSelfUpdate = !Program.JustUpdated;
             RunInBackground(delegate
             {
                 try { updater.Check(verifyEverything); }
@@ -257,6 +258,18 @@ namespace CopperLauncher
 
         void AfterCheck(Exception error)
         {
+            if (error == null && updater.LauncherReplaced)
+            {
+                // A newer launcher was downloaded: open it and close this one.
+                try
+                {
+                    Program.RestartUpdated(ScreenshotPath != null ? new string[] { "--screenshot", "\"" + ScreenshotPath + "\"" } : new string[0]);
+                    ScreenshotPath = null;
+                    Close();
+                    return;
+                }
+                catch (Exception ex) { Log.Write("Couldn't start the new launcher: " + ex.Message); }
+            }
             UpdateVersionLabel();
             if (error != null)
             {

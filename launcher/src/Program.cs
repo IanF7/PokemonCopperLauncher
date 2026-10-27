@@ -16,7 +16,13 @@ namespace CopperLauncher
 {
     static class Program
     {
-        public const string Version = "1.0.0";
+        // Bump this whenever you change the launcher; release.bat ships it and
+        // players' launchers replace themselves with it.
+        public const string Version = "1.1.0";
+
+        // True when this launcher was just started by an older one that replaced
+        // itself; stops it from trying to self-update again straight away.
+        public static bool JustUpdated;
 
         [DllImport("user32.dll")]
         static extern bool SetProcessDPIAware();
@@ -25,6 +31,7 @@ namespace CopperLauncher
         // Testing options:
         //   --headless           check and update without showing a window (exit code 0 = ok)
         //   --screenshot <file>  open the window, save a picture of it after the check, close
+        //   --updated            (used internally after the launcher replaces itself)
         [STAThread]
         static int Main(string[] args)
         {
@@ -42,7 +49,9 @@ namespace CopperLauncher
             {
                 if (args[i] == "--headless") headless = true;
                 else if (args[i] == "--screenshot" && i + 1 < args.Length) screenshot = args[++i];
+                else if (args[i] == "--updated") JustUpdated = true;
             }
+            Updater.CleanUpOldLauncher();
 
             if (headless) return RunHeadless(cfg);
 
@@ -65,13 +74,31 @@ namespace CopperLauncher
             return 0;
         }
 
+        // Starts the freshly downloaded launcher with the given arguments.
+        public static System.Diagnostics.Process RestartUpdated(string[] args)
+        {
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(Updater.ExePath);
+            psi.Arguments = string.Join(" ", args) + " --updated";
+            psi.WorkingDirectory = Path.GetDirectoryName(Updater.ExePath);
+            psi.UseShellExecute = false;
+            return System.Diagnostics.Process.Start(psi);
+        }
+
         static int RunHeadless(Config cfg)
         {
             try
             {
                 Updater u = new Updater(cfg);
                 u.Report = delegate (string s, double f) { };
+                u.AllowSelfUpdate = !JustUpdated;
                 u.Check(false);
+                if (u.LauncherReplaced)
+                {
+                    // Hand over to the new launcher and pass on its result.
+                    System.Diagnostics.Process p = RestartUpdated(new string[] { "--headless" });
+                    p.WaitForExit();
+                    return p.ExitCode;
+                }
                 Log.Write("[headless] update available: " + u.UpdateAvailable + ", download " + Updater.Mb(u.DownloadSize));
                 if (u.UpdateAvailable) u.Apply();
                 Log.Write("[headless] done, installed " + u.State.InstalledVersion);

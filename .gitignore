@@ -1,0 +1,15 @@
+# Temporary copies made while building a release
+build/
+test/
+
+# Big release files: these go on GitHub Releases, not in the code.
+# (history.txt and each release's manifest.txt/patchnotes.txt ARE kept:
+# the release tool compares each new version against the last manifest.)
+releases/*/upload/*.zip
+releases/*/upload/Launcher.exe
+
+# Files the launcher makes when you run it from this folder
+launcher_data/
+launcher.ini
+
+__pycache__/

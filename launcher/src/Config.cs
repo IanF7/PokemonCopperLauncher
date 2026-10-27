@@ -13,7 +13,7 @@ namespace CopperLauncher
         // Where releases live. GitHub release URLs look like:
         //   {ReleaseBase}/latest/download/manifest.txt
         //   {ReleaseBase}/download/{tag}/{file}
-        public string ReleaseBase = "https://github.com/IanF7/PokemonCopper/releases";
+        public string ReleaseBase = "https://github.com/IanF7/PokemonCopperLauncher/releases";
         public string WebsiteUrl = "https://ianf7.github.io/PokemonCopper/";
         public string DiscordUrl = "https://discord.gg/pavpnHGPYh";
         public string GameTitle = "Pokémon Copper";

@@ -1,8 +1,9 @@
-"""Builds the files to upload for a new game version.
+"""Builds the launcher's update files for a game version, from a ready-to-ship
+game folder. (For a normal release, use release.bat instead: it prepares the
+folder, calls this, and also makes the full downloads.)
 
 Usage:
     python tools/make_release.py 1.9.3
-    python tools/make_release.py 1.9.3 --full-zip     also make a normal full-game zip
     python tools/make_release.py 1.9.3 --replace      rebuild a version you haven't uploaded yet
 
 Options for testing:
@@ -17,6 +18,7 @@ What it does:
 Everything to upload ends up in releases/v<version>/upload/.
 """
 import argparse
+import re
 import fnmatch
 import hashlib
 import json
@@ -112,16 +114,22 @@ def mb(n):
     return "%.1f MB" % (n / 1048576.0)
 
 
-def main():
-    ap = argparse.ArgumentParser(description="Build upload files for a new Pokemon Copper version.")
-    ap.add_argument("version", help="e.g. 1.9.3")
-    ap.add_argument("--game", help="game folder (default from release_settings.json)")
-    ap.add_argument("--releases-dir", default=os.path.join(ROOT, "releases"))
-    ap.add_argument("--replace", action="store_true", help="rebuild this version if it already exists")
-    ap.add_argument("--full-zip", action="store_true", help="also build a full-game zip with the launcher")
-    ap.add_argument("--allow-extracted-scripts", action="store_true",
-                    help="for testing: ship Data/Scripts as-is instead of requiring scripts_combine.rb")
-    args = ap.parse_args()
+def launcher_version():
+    """The version number written in launcher/src/Program.cs."""
+    src = open(os.path.join(ROOT, "launcher", "src", "Program.cs"), encoding="utf-8").read()
+    m = re.search(r'Version\s*=\s*"([0-9.]+)"', src)
+    return m.group(1) if m else None
+
+
+def build_release(version, game=None, releases_dir=None, replace=False, allow_extracted_scripts=False):
+    """Builds the launcher's update files for one version. Returns a dict with
+    the upload folder, the list of shipped files and the empty folders."""
+    class _Args:
+        pass
+    args = _Args()
+    args.version, args.game, args.replace = version, game, replace
+    args.releases_dir = releases_dir or os.path.join(ROOT, "releases")
+    args.allow_extracted_scripts = allow_extracted_scripts
 
     version = args.version.lstrip("vV")
     tag = "v" + version
@@ -238,6 +246,14 @@ def main():
         lines.append("dir\t" + d)
     for d in deletes:
         lines.append("delete\t" + d)
+    # The newest launcher rides along with every release so players' launchers can update themselves.
+    launcher_exe = os.path.join(ROOT, "launcher", "dist", "Launcher.exe")
+    lver = launcher_version()
+    if os.path.exists(launcher_exe) and lver:
+        shutil.copyfile(launcher_exe, os.path.join(out_dir, "Launcher.exe"))
+        lines.append("launcher\t%s\t%s\tLauncher.exe\t%d\t%s" % (lver, tag, os.path.getsize(launcher_exe), sha1_of(launcher_exe)))
+    else:
+        print("WARNING: launcher/dist/Launcher.exe not found; this release won't update players' launchers.")
     with open(os.path.join(out_dir, "manifest.txt"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(lines) + "\n")
     if notes:
@@ -245,20 +261,6 @@ def main():
 
     history.append(tag)
     save_history(rel_dir, history)
-
-    if args.full_zip:
-        launcher = os.path.join(ROOT, "launcher", "dist", "Launcher.exe")
-        full = os.path.join(rel_dir, tag, "Pokemon Copper %s.zip" % version)
-        print("Building full download %s ..." % os.path.basename(full))
-        with zipfile.ZipFile(full, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
-            for d in empty_dirs:
-                z.writestr("Pokemon Copper/" + d + "/", "")
-            for rel in sorted(files):
-                z.write(os.path.join(game, rel.replace("/", os.sep)), "Pokemon Copper/" + rel)
-            if os.path.exists(launcher):
-                z.write(launcher, "Pokemon Copper/Launcher.exe")
-            else:
-                print("WARNING: launcher/dist/Launcher.exe not found, build it first (launcher/build.bat).")
 
     print()
     print("Done! %s" % tag)
@@ -271,6 +273,19 @@ def main():
     print("  " + out_dir)
     for fn in sorted(os.listdir(out_dir)):
         print("    - %s (%s)" % (fn, mb(os.path.getsize(os.path.join(out_dir, fn)))))
+    return {"tag": tag, "out_dir": out_dir, "files": files, "empty_dirs": empty_dirs, "game": game}
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Build the launcher's update files for a version.")
+    ap.add_argument("version", help="e.g. 1.9.3")
+    ap.add_argument("--game", help="game folder (default from release_settings.json)")
+    ap.add_argument("--releases-dir", default=os.path.join(ROOT, "releases"))
+    ap.add_argument("--replace", action="store_true", help="rebuild this version if it already exists")
+    ap.add_argument("--allow-extracted-scripts", action="store_true",
+                    help="for testing: ship Data/Scripts as-is instead of requiring scripts_combine.rb")
+    a = ap.parse_args()
+    build_release(a.version, a.game, a.releases_dir, a.replace, a.allow_extracted_scripts)
 
 
 if __name__ == "__main__":

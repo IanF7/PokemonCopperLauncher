@@ -2,6 +2,7 @@
   "game_folder": "../Pokemon Copper",
   "launch": "Game.exe",
   "pack_size_mb": 32,
+  "android_setcontrols_section": "Essentials-SetControls",
   "exclude": [
     "Game.rxproj",
     "scripts_combine.rb",
