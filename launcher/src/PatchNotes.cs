@@ -7,7 +7,7 @@ namespace CopperLauncher
     // Turns patchnotes.txt into formatted text for the patch notes box.
     //
     // Format (same as tools/patchnotes.txt):
-    //   # Version 1.9.3        version heading
+    //   # Version 1.9.3 (10/23/2026)   version heading, with an optional release date
     //   ## Bug Fixes           section heading
     //   - Fixed a thing.       bullet
     //     - nested detail      bullet, indented two spaces per level
@@ -33,8 +33,12 @@ namespace CopperLauncher
                 }
                 else if (line.StartsWith("# "))
                 {
+                    string title, date;
+                    SplitDate(line.Substring(2).Trim(), out title, out date);
                     sb.Append(first ? @"\pard\sb0" : @"\pard\sb360").Append(@"\sa20\cf2\b\fs30 ")
-                      .Append(Esc(line.Substring(2))).Append(@"\b0\par");
+                      .Append(Esc(title)).Append(@"\b0");
+                    if (date != null) sb.Append(@"\cf4\fs19   ").Append(Esc(date));
+                    sb.Append(@"\par");
                 }
                 else
                 {
@@ -58,6 +62,23 @@ namespace CopperLauncher
             }
             sb.Append("}");
             return sb.ToString();
+        }
+
+        // "Version 1.9.2 (10/23/2026)" -> "Version 1.9.2" + "October 23, 2026".
+        // Anything in the brackets that isn't a month/day/year date is shown as written.
+        static void SplitDate(string heading, out string title, out string date)
+        {
+            title = heading; date = null;
+            int open = heading.LastIndexOf('(');
+            if (!heading.EndsWith(")") || open <= 0) return;
+            string inside = heading.Substring(open + 1, heading.Length - open - 2).Trim();
+            if (inside.Length == 0) return;
+            title = heading.Substring(0, open).TrimEnd();
+            DateTime d;
+            date = DateTime.TryParseExact(inside, new[] { "M/d/yyyy", "M/d/yy", "yyyy-MM-dd" },
+                       System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out d)
+                ? d.ToString("MMMM d, yyyy", System.Globalization.CultureInfo.InvariantCulture)
+                : inside;
         }
 
         static string C(Color c)

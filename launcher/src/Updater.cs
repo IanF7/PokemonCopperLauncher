@@ -259,6 +259,98 @@ namespace CopperLauncher
             Report("Up to date!", 1);
         }
 
+        // ---------------------------------------------------------------- uninstall
+
+        // Size on disk of the game files the launcher installed.
+        public long InstalledSize()
+        {
+            long total = 0;
+            foreach (string rel in GameFiles())
+            {
+                try { FileInfo fi = new FileInfo(SafePath(rel)); if (fi.Exists) total += fi.Length; }
+                catch { }
+            }
+            return total;
+        }
+
+        // Every file the launcher put in the game folder: the ones in the latest release,
+        // plus any it remembers installing from earlier releases.
+        List<string> GameFiles()
+        {
+            HashSet<string> set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (Remote != null) foreach (FileEntry f in Remote.Files) set.Add(f.Path);
+            foreach (string rel in State.KnownFiles()) set.Add(rel);
+            return new List<string>(set);
+        }
+
+        // Removes the game files the launcher installed. Only files it knows about are
+        // touched, so saves, screenshots and anything the player added stay put.
+        // Launcher.exe and launcher_data are kept so the game can be reinstalled.
+        public void Uninstall()
+        {
+            List<string> files = GameFiles();
+            string exe = Path.GetFullPath(ExePath);
+            string dataRoot = cfg.DataDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            HashSet<string> dirs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (Remote != null) foreach (string d in Remote.Dirs) dirs.Add(d.Replace('\\', '/'));
+
+            int done = 0, failed = 0, lastTick = 0;
+            Report("Uninstalling...", 0);
+            foreach (string rel in files)
+            {
+                ThrowIfCancelled();
+                string full;
+                try { full = SafePath(rel); }
+                catch { continue; }
+                if (string.Equals(full, exe, StringComparison.OrdinalIgnoreCase) ||
+                    full.StartsWith(dataRoot, StringComparison.OrdinalIgnoreCase)) continue;
+                try
+                {
+                    if (File.Exists(full)) { File.SetAttributes(full, FileAttributes.Normal); File.Delete(full); }
+                    State.Forget(rel);
+                }
+                catch (Exception ex) { failed++; Log.Write("Couldn't remove " + rel + ": " + ex.Message); }
+
+                // Remember every folder above this file so empty ones can be tidied up.
+                string r = rel.Replace('\\', '/');
+                for (int i = r.LastIndexOf('/'); i > 0; i = r.LastIndexOf('/', i - 1)) dirs.Add(r.Substring(0, i));
+
+                done++;
+                if (Environment.TickCount - lastTick > 100)
+                {
+                    lastTick = Environment.TickCount;
+                    Report("Uninstalling...", (double)done / files.Count);
+                }
+            }
+
+            // Remove folders left empty, deepest first. Folders with anything else in them stay.
+            List<string> ordered = new List<string>(dirs);
+            ordered.Sort(delegate (string a, string b) { return b.Length.CompareTo(a.Length); });
+            foreach (string d in ordered)
+            {
+                try
+                {
+                    string full = SafePath(d);
+                    if (Directory.Exists(full) && Directory.GetFileSystemEntries(full).Length == 0) Directory.Delete(full);
+                }
+                catch { }
+            }
+
+            try
+            {
+                string dl = Path.Combine(cfg.DataDir, "downloads");
+                if (Directory.Exists(dl)) Directory.Delete(dl, true);
+            }
+            catch { }
+
+            State.InstalledVersion = "";
+            State.Save();
+            Log.Write("Uninstalled: removed " + (done - failed) + " file(s), " + failed + " couldn't be removed.");
+            if (failed > 0)
+                throw new FriendlyException(failed + " file(s) couldn't be removed. Make sure the game isn't running, then try again.");
+            Report("Uninstalled.", 0);
+        }
+
         Dictionary<int, List<FileEntry>> NeededPacks()
         {
             Dictionary<int, List<FileEntry>> byPack = new Dictionary<int, List<FileEntry>>();

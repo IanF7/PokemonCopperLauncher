@@ -1,4 +1,4 @@
-# Version 1.9.2
+# Version 1.9.2 (10/23/2026)
 ## Balancing
 - Adjusted the trainer AI to switch Pokémon less frequently during battle.
 ## Other
@@ -16,7 +16,7 @@
 - Fixed various name tag errors throughout the game.
 - Fixed a large number of typos throughout the game. And I mean a lot.
 
-# Version 1.9.1
+# Version 1.9.1 (10/4/2026)
 ## Balancing
 - Changed Volstrika's second ability from Electric Surge to Motor Drive.
 - Changed Azorian Blissey's Hidden Ability from Merciless to Curious Medicine.
@@ -28,7 +28,7 @@
 ## Other
 - Readjusted audio balancing for a few of the new Pokémon cries.
 
-# Version 1.9
+# Version 1.9 (9/26/2026)
 ## New
 - Added cries for all the new Pokémon.
 - All attacks introduced in the game now have their own animations.
@@ -66,7 +66,7 @@
 - Fixed Gren-egg damaging allies and opposing Pokémon instead of only damaging all opposing Pokémon.
 - Fixed Guiding Flame not damaging the target.
 
-# Version 1.8.5
+# Version 1.8.5 (8/10/2026)
 ## Other
 - Updated the list of items available from the Pickup ability to the following:
   - Common: Potion (1-10), Poké Ball (1-20), Super Potion (1-30), Great Ball (1-40), Repel (1-50), Tiny Mushroom (1-60), Full Heal (1-70), Hyper Potion (1-80), Ultra Ball (1-90), Revive (11-100), Rare Candy (21-100), Sun Stone (31-100), Moon Stone (41-100), Stardust (51-100), Full Restore (61-100), Max Revive (71-100), PP Up (81-100), Max Elixir (91-100)
@@ -76,7 +76,7 @@
 - Fixed being able to surf on cliff tiles at the edge of the water in Hilo Mountain.
 - Fixed Dragonair and Chansey not being able to evolve into their regional forms.
 
-# Version 1.8.4
+# Version 1.8.4 (7/25/2026)
 ## New
 - Added a dynamic weather system.
 ## Balancing
@@ -90,7 +90,7 @@
 - Fixed Aegislash de-Mega Evolving when switched out and not being able to Mega Evolve while in Blade Form.
 - Fixed the map transition between Lake Triton and Route 13 not lining up correctly.
 
-# Version 1.8.3
+# Version 1.8.3 (7/5/2026)
 ## Other
 - Added a move relearner in the Horizon Cup Prep Room.
 - When using the PC, the screen will now turn on.
@@ -100,7 +100,7 @@
 - Fixed the map connection between Kuiper Town and Route 17 being shifted up a tile.
 - Fixed Ewan despawning in the middle of the conversation in Penetun City if the player entered from Route 13.
 
-# Version 1.8.2
+# Version 1.8.2 (6/29/2026)
 ## New
 - Added a plugin that allows for sorting and searching items in the Bag.
 ## Other
@@ -111,11 +111,11 @@
 - Fixed a game crash when throwing a Poké Ball after doing a soft reset with F12.
 - Fixed battles in Horizon Stadium still being accessible after completing them.
 
-# Version 1.8.1
+# Version 1.8.1 (6/18/2026)
 ## Bug Fixes
 - Fixed bug preventing game startup.
 
-# Version 1.8
+# Version 1.8 (6/18/2026)
 ## New
 - Added a plugin to allow players to view IVs and EVs in the Pokémon summary menu.
 ## Balancing
@@ -131,7 +131,7 @@
 - Removed the old cave exit still being in Spiral Cave.
 - Removed a debug trainer used for testing in Terah Town.
 
-# Version 1.7
+# Version 1.7 (6/14/2026)
 ## New
 - Added Mega Evolutions from Legends ZA. Any without abilities given in Pokémon Champions will have the abilities they had before Mega Evolving.
 - Added a journal feature that tracks current objectives and tells the player where to go.
@@ -155,7 +155,7 @@
 - Made it so the citizens of Jepitur City vanish during the attack on the Horizon Cup Stadium.
 - Added an option to challenge Dante without Coradios.
 
-# Version 1.6
+# Version 1.6 (5/23/2026)
 ## Bug Fixes
 - Fixed being able to get infinite Cut TMs.
 - Fixed Kamakid and Kamasei shinies not displaying correctly.
@@ -181,7 +181,7 @@
 - You can now purchase a Bloodmoon Ursaluna from one of the vendors outside Azori Terrarium in the postgame.
 - Fixed various typos.
 
-# Version 1.5
+# Version 1.5 (5/20/2026)
 ## Bug Fixes
 - Fixed losing to Ewan, Hayden, any of the Team Eclipse Admins, or the grunts on Route 3 potentially softlocking the game.
 - Fixed player getting softlocked if choosing a starter from the left edge of the table.
@@ -219,7 +219,7 @@
 - Added a small chance to encounter Rockruff with Own Tempo.
 - Added more times of day to skip to using the sleeping bag.
 
-# Version 1.4
+# Version 1.4 (5/17/2026)
 ## Bug Fixes
 - Fixed gym leaders making the player select one less pokemon than they should.
 - Fixed puzzle in the Crimson Temple.
@@ -229,7 +229,7 @@
 - Made it so Forgotten Temple won't appear on the map until the player has been there.
 - Fixed trainer errors on Route 14.
 
-# Version 1.3
+# Version 1.3 (5/17/2026)
 ## Bug Fixes
 - Fixed TM 83 and TM 135 both being Poison Jab. TM 135 is now Body Slam.
 - Fixed trash can in Jepitur City giving infinite Ability Capsules.
@@ -262,7 +262,7 @@
 - Removed scrapped Mega Evolutions from the list of new Mega Evolutions in the Jepitur Office Building.
 - Fixed various typos.
 
-# Version 1.2
+# Version 1.2 (5/16/2026)
 ## Bug Fixes
 - Fixed entrance to Majestic Chamber sending the player to the Legendary Chamber in the Elite 4.
 - Fixed crash when getting a Bikkunise from the Rasm Game Corner.
@@ -273,7 +273,7 @@
 - Fixed a few typos.
 - Adjusted Pokedex rewards so now Professor Verde won't give players rewards for catching 150 Pokemon or more until after they have acquired 6 or more badges.
 
-# Version 1.1
+# Version 1.1 (5/15/2026)
 ## Bug Fixes
 - Fixed not being able to change button layout on controller by adding a new plugin.
 - Fixed Cut, Surf, Strength, Waterfall, and Dive not being able to be deleted.

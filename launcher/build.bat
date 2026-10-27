@@ -12,7 +12,7 @@ if not exist dist mkdir dist
 "%CSC%" /nologo /codepage:65001 /target:winexe /platform:anycpu /optimize+ ^
   /out:dist\Launcher.exe ^
   /win32icon:assets\icon.ico ^
-  /resource:assets\banner.png,banner.png ^
+  /resource:assets\backdrop.png,backdrop.png ^
   /r:System.dll /r:System.Drawing.dll /r:System.Windows.Forms.dll /r:System.IO.Compression.dll ^
   src\*.cs
 if errorlevel 1 (

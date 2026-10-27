@@ -16,6 +16,7 @@ namespace CopperLauncher
         public string ReleaseBase = "https://github.com/IanF7/PokemonCopperLauncher/releases";
         public string WebsiteUrl = "https://ianf7.github.io/PokemonCopper/";
         public string DiscordUrl = "https://discord.gg/pavpnHGPYh";
+        public string ShowdownUrl = "http://pokemoncoppershowdown.duckdns.org/";
         public string GameTitle = "Pokémon Copper";
 
         public string GameDir;   // Folder Launcher.exe is in (the game folder).
@@ -50,6 +51,7 @@ namespace CopperLauncher
                     if (key == "release_base") c.ReleaseBase = val;
                     else if (key == "website_url") c.WebsiteUrl = val;
                     else if (key == "discord_url") c.DiscordUrl = val;
+                    else if (key == "showdown_url") c.ShowdownUrl = val;
                 }
                 Log.Write("Loaded launcher.ini (release_base = " + c.ReleaseBase + ")");
             }

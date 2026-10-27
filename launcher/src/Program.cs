@@ -18,7 +18,7 @@ namespace CopperLauncher
     {
         // Bump this whenever you change the launcher; release.bat ships it and
         // players' launchers replace themselves with it.
-        public const string Version = "1.1.0";
+        public const string Version = "1.2.0";
 
         // True when this launcher was just started by an older one that replaced
         // itself; stops it from trying to self-update again straight away.

@@ -152,6 +152,8 @@ namespace CopperLauncher
 
         public void Forget(string rel) { cache.Remove(rel); }
 
+        public List<string> KnownFiles() { return new List<string>(cache.Keys); }
+
         public void Save()
         {
             StringBuilder sb = new StringBuilder();

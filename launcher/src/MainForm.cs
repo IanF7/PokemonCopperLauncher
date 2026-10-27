@@ -28,12 +28,13 @@ namespace CopperLauncher
         Mode mode = Mode.Busy;
         bool working;
 
-        BannerControl banner;
+        BackdropControl backdrop;
+        Panel notesColumn;
         RichTextBox notesBox;
         Label versionLabel, statusLabel;
         CopperProgress progress;
         Button mainButton;
-        LinkLabel skipLink, repairLink;
+        LinkLabel skipLink, repairLink, uninstallLink;
 
         public string ScreenshotPath;   // test hook: save a picture of the window then close
 
@@ -53,23 +54,29 @@ namespace CopperLauncher
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             Text = cfg.GameTitle + " Launcher";
-            ClientSize = new Size(740, 590);
-            MinimumSize = new Size(560, 480);
+            ClientSize = new Size(980, 600);
+            MinimumSize = new Size(820, 520);
             StartPosition = FormStartPosition.CenterScreen;
             BackColor = Bg;
             ForeColor = Ink;
             Font = new Font("Segoe UI", 9.5F);
             try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } catch { }
 
-            // --- middle: patch notes (added first so it fills what's left) ---
-            Panel middle = new Panel();
-            middle.Dock = DockStyle.Fill;
-            middle.Padding = new Padding(18, 14, 18, 6);
+            // --- right: patch notes card, beside the art rather than on top of it ---
+            notesColumn = new Panel();
+            notesColumn.Dock = DockStyle.Right;
+            notesColumn.Width = 340;
+            notesColumn.Padding = new Padding(4, 18, 18, 4);
 
-            Panel notesFrame = new Panel();
-            notesFrame.Dock = DockStyle.Fill;
-            notesFrame.BackColor = PanelBg;
-            notesFrame.Padding = new Padding(14, 12, 6, 12);
+            Panel notesCard = new Panel();
+            notesCard.Dock = DockStyle.Fill;
+            notesCard.BackColor = PanelBg;
+            notesCard.Padding = new Padding(16, 14, 6, 12);
+            notesCard.Paint += delegate (object s, PaintEventArgs e)
+            {
+                // Copper accent along the top edge of the card.
+                using (SolidBrush b = new SolidBrush(Copper)) e.Graphics.FillRectangle(b, 0, 0, notesCard.Width, 3);
+            };
 
             notesBox = new RichTextBox();
             notesBox.Dock = DockStyle.Fill;
@@ -80,31 +87,37 @@ namespace CopperLauncher
             notesBox.ScrollBars = RichTextBoxScrollBars.Vertical;
             notesBox.DetectUrls = false;
             notesBox.TabStop = false;
-            notesFrame.Controls.Add(notesBox);
             notesBox.HandleCreated += delegate { DarkScrollbars(notesBox); };
-
-            Panel notesHeader = new Panel();
-            notesHeader.Dock = DockStyle.Top;
-            notesHeader.Height = 30;
 
             Label notesTitle = new Label();
             notesTitle.Text = "PATCH NOTES";
-            notesTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            notesTitle.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             notesTitle.ForeColor = Copper;
-            notesTitle.AutoSize = true;
-            notesTitle.Dock = DockStyle.Left;
+            notesTitle.Dock = DockStyle.Top;
+            notesTitle.Height = 24;
 
             versionLabel = new Label();
             versionLabel.ForeColor = Muted;
-            versionLabel.AutoSize = true;
-            versionLabel.Dock = DockStyle.Right;
-            versionLabel.Padding = new Padding(0, 2, 0, 0);
+            versionLabel.Font = new Font("Segoe UI", 8.75F);
+            versionLabel.Dock = DockStyle.Top;
+            versionLabel.Height = 20;
+            versionLabel.AutoEllipsis = true;
 
-            notesHeader.Controls.Add(versionLabel);
-            notesHeader.Controls.Add(notesTitle);
+            // Thin line between the header and the notes.
+            Panel notesRule = new Panel();
+            notesRule.Dock = DockStyle.Top;
+            notesRule.Height = 13;
+            notesRule.Paint += delegate (object s, PaintEventArgs e)
+            {
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(62, 47, 39)))
+                    e.Graphics.FillRectangle(b, 0, 4, notesRule.Width - 10, 1);
+            };
 
-            middle.Controls.Add(notesFrame);
-            middle.Controls.Add(notesHeader);
+            notesCard.Controls.Add(notesBox);
+            notesCard.Controls.Add(notesRule);
+            notesCard.Controls.Add(versionLabel);
+            notesCard.Controls.Add(notesTitle);
+            notesColumn.Controls.Add(notesCard);
 
             // --- bottom: status, progress, buttons ---
             TableLayoutPanel bottom = new TableLayoutPanel();
@@ -138,8 +151,11 @@ namespace CopperLauncher
             links.Padding = new Padding(0, 6, 0, 0);
             links.Controls.Add(MakeLink("Website", delegate { OpenUrl(cfg.WebsiteUrl); }));
             links.Controls.Add(MakeLink("Discord", delegate { OpenUrl(cfg.DiscordUrl); }));
+            links.Controls.Add(MakeLink("Showdown Server", delegate { OpenUrl(cfg.ShowdownUrl); }));
             repairLink = MakeLink("Repair game files", delegate { StartCheck(true); });
             links.Controls.Add(repairLink);
+            uninstallLink = MakeLink("Uninstall", delegate { StartUninstall(); });
+            links.Controls.Add(uninstallLink);
             skipLink = MakeLink("Play without updating", delegate { LaunchGame(); });
             skipLink.Visible = false;
             links.Controls.Add(skipLink);
@@ -164,20 +180,32 @@ namespace CopperLauncher
             bottom.Controls.Add(mainButton, 1, 0);
             bottom.SetRowSpan(mainButton, 3);
 
-            // --- top: banner ---
-            banner = new BannerControl();
-            banner.Dock = DockStyle.Top;
-            banner.Height = 190;
-            banner.Image = LoadBanner();
+            // --- left: the title art, filling whatever space is left ---
+            backdrop = new BackdropControl();
+            backdrop.Dock = DockStyle.Fill;
+            backdrop.Image = LoadBanner();
+            backdrop.FadeTo = Bg;
 
-            Controls.Add(middle);
+            // Docking goes in reverse order: bottom bar first (full width),
+            // then the notes column, then the art takes the rest.
+            Controls.Add(backdrop);
+            Controls.Add(notesColumn);
             Controls.Add(bottom);
-            Controls.Add(banner);
             AcceptButton = mainButton;
             ResumeLayout(true);
 
             SetMode(Mode.Busy);
             UpdateVersionLabel();
+        }
+
+        // Notes column grows a little with the window, but the art always gets most of it.
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (notesColumn == null || WindowState == FormWindowState.Minimized) return;
+            float dpi = DeviceDpi / 96f;
+            int w = (int)Math.Max(330 * dpi, Math.Min(470 * dpi, ClientSize.Width * 0.34f));
+            if (notesColumn.Width != w) notesColumn.Width = w;
         }
 
         [System.Runtime.InteropServices.DllImport("uxtheme.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
@@ -207,7 +235,7 @@ namespace CopperLauncher
         {
             try
             {
-                using (Stream s = typeof(MainForm).Assembly.GetManifestResourceStream("banner.png"))
+                using (Stream s = typeof(MainForm).Assembly.GetManifestResourceStream("backdrop.png"))
                     return s == null ? null : new Bitmap(s);
             }
             catch { return null; }
@@ -334,6 +362,35 @@ namespace CopperLauncher
             });
         }
 
+        void StartUninstall()
+        {
+            if (working) return;
+            string size = Updater.Mb(updater.InstalledSize());
+            DialogResult r = MessageBox.Show(this,
+                "Uninstall " + cfg.GameTitle + "?\n\n" +
+                "This removes the game files from this folder (" + size + ").\n" +
+                "Your save files are kept, and so is the launcher, so you can reinstall any time.",
+                "Uninstall " + cfg.GameTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (r != DialogResult.Yes) return;
+
+            SetMode(Mode.Busy);
+            Exception error = null;
+            RunInBackground(delegate
+            {
+                try { updater.Uninstall(); }
+                catch (Exception ex) { error = ex; }
+            }, delegate
+            {
+                if (error != null)
+                {
+                    Log.Write("Uninstall failed: " + error);
+                    MessageBox.Show(this, Friendly(error), "Uninstall problem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                // Re-check so the window shows the game as not installed (with an Install button).
+                StartCheck(false);
+            });
+        }
+
         void LaunchGame()
         {
             string launch = updater.Remote != null ? updater.Remote.Launch : "Game.exe";
@@ -381,6 +438,7 @@ namespace CopperLauncher
             mainButton.BackColor = busy ? Color.FromArgb(90, 66, 52) : Copper;
             mainButton.Text = m == Mode.Play ? "PLAY" : m == Mode.Update ? (IsFreshInstall() ? "INSTALL" : "UPDATE") : m == Mode.Retry ? "RETRY" : "...";
             repairLink.Visible = !busy && updater.Remote != null;
+            uninstallLink.Visible = !busy && updater.Remote != null && updater.GameInstalled;
             skipLink.Visible = m == Mode.Update && updater.GameInstalled;
             if (m == Mode.Busy) progress.Value = -1;
             else if (m == Mode.Play) progress.Value = 1;
@@ -504,33 +562,63 @@ namespace CopperLauncher
         }
     }
 
-    // The title art across the top, scaled up crisply (it's pixel art).
-    class BannerControl : Control
+    // The title art, scaled up crisply (it's pixel art) to fill the space it's given.
+    // backdrop.png is the title screen with the black bars trimmed off (512x266).
+    class BackdropControl : Control
     {
         public Image Image;
+        public Color FadeTo = Color.Black;
 
-        public BannerControl()
+        // Colours at the very top (sky) and bottom (ground) of the art, used to
+        // extend it seamlessly if the window is a very different shape.
+        static readonly Color Sky = Color.FromArgb(245, 88, 40);
+        static readonly Color Ground = Color.FromArgb(71, 52, 47);
+
+        // Horizontal span of the logo in the art; never cropped.
+        const float LogoLeft = 112f, LogoRight = 384f;
+
+        public BackdropControl()
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.ResizeRedraw, true);
-            BackColor = Color.Black;
+            BackColor = Sky;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.Clear(Color.Black);
-            if (Image == null) return;
-            g.InterpolationMode = InterpolationMode.NearestNeighbor;
-            g.PixelOffsetMode = PixelOffsetMode.Half;
+            int W = Width, H = Height;
+            if (W <= 0 || H <= 0) return;
 
-            // The art is 512x384; the logo sits in rows ~18-153. Scale so that band fills
-            // the control (cropping the sides or the sky if needed) and centre on it.
-            const float bandTop = 21f, bandHeight = 135f;
-            float scale = Math.Max(Width / (float)Image.Width, Height / bandHeight);
-            float w = Image.Width * scale, h = Image.Height * scale;
-            float x = (Width - w) / 2f;
-            float y = -bandTop * scale - (bandHeight * scale - Height) / 2f;
-            g.DrawImage(Image, new RectangleF(x, y, w, h));
+            using (SolidBrush b = new SolidBrush(Sky)) g.FillRectangle(b, 0, 0, W, H / 2 + 1);
+            using (SolidBrush b = new SolidBrush(Ground)) g.FillRectangle(b, 0, H / 2, W, H - H / 2);
+
+            if (Image != null)
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = PixelOffsetMode.Half;
+
+                // Fill the area (cropping edges as needed), but never so far that the logo is cut off.
+                float scale = Math.Max(W / (float)Image.Width, H / (float)Image.Height);
+                scale = Math.Min(scale, W / (LogoRight - LogoLeft + 56f));
+                float w = Image.Width * scale, h = Image.Height * scale;
+
+                // Centre on the logo, without leaving gaps at the sides.
+                float x = W / 2f - (LogoLeft + LogoRight) / 2f * scale;
+                x = Math.Min(0f, Math.Max(W - w, x));
+                // Too tall: crop mostly from the ground so the logo keeps its headroom.
+                // Too short: sit the ground on the bottom; the flat sky at the top extends upward.
+                float y = h > H ? (H - h) * 0.1f : H - h;
+                g.DrawImage(Image, new RectangleF(x, y, w, h));
+            }
+
+            // Soft fade into the window colour along the right and bottom edges.
+            int fr = Math.Min(48, W / 6), fb = Math.Min(56, H / 5);
+            using (LinearGradientBrush b = new LinearGradientBrush(new Rectangle(W - fr - 1, 0, fr + 1, H),
+                   Color.FromArgb(0, FadeTo), FadeTo, LinearGradientMode.Horizontal))
+                g.FillRectangle(b, W - fr, 0, fr, H);
+            using (LinearGradientBrush b = new LinearGradientBrush(new Rectangle(0, H - fb - 1, W, fb + 1),
+                   Color.FromArgb(0, FadeTo), FadeTo, LinearGradientMode.Vertical))
+                g.FillRectangle(b, 0, H - fb, W, fb);
         }
     }
 
